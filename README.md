@@ -44,11 +44,16 @@ System design and basic problem-solving in health management.
 Debugging and clean, modular code writing for efficient performance.
 
 Author
+
 Raji Tesfaye Tadesse
+
 Email: rajitesfaye36@gmail.com
 
 License
+
 This system is free for educational purposes, allowing anyone to study, improve, and contribute to its development.
+
 Contributions
+
 Feel free to extend the features, such as adding support for more advanced functionalities or integrating it with other health systems. This project is suitable for community healthcare learning.
 
