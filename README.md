@@ -1,3 +1,17 @@
+
+
+First:
+
+Task Management Web Application
+
+Developed by Raji Tesfaye Tadesse (rajitesfaye36@gmail.com), this Task Management Web Application is a user-friendly tool built with HTML, CSS, and JavaScript. It enables users to create, edit, delete, and filter tasks, with data persistence via local storage. Featuring a responsive design styled with Tailwind CSS, the app showcases modern web development techniques and is ideal for managing daily tasks efficiently.
+
+
+
+
+
+Second:
+
 Clinical Management System (CMS)
 
 Project Overview
