@@ -31,21 +31,25 @@ Compile all “.cpp” files and execute the output file to run the system.
 Project Phases
 
 Phase 1: Learn basics of C++ with simple file handling and struct usage.
+
 Phase 2: Implement data management for  patient records.
+
 Phase 3: Incorporate language options and final testing for offline usability.
+
 Unique Features of the Project
+
 Fully offline system with no need for internet access.
 Bilingual interface in Oromic and English.
 Simple and intuitive enough to be used on basic computers for local health centers.
+
 Skills You Will Learn
+
 Real C++ coding skills for practical applications in healthcare.
 File handling and data management techniques.
 System design and basic problem-solving in health management.
 Debugging and clean, modular code writing for efficient performance.
 
-Author
-
-Raji Tesfaye Tadesse
+Author: Raji Tesfaye Tadesse
 
 Email: rajitesfaye36@gmail.com
 
