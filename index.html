@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Task Management App</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-4 max-w-2xl">
+      <h1 class="text-3xl font-bold text-center mb-6">Task Management App</h1>
+
+      <!-- Task Input Form -->
+      <div class="mb-4">
+        <input
+          type="text"
+          id="taskInput"
+          placeholder="Enter a new task"
+          class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <button
+          id="addTaskBtn"
+          class="mt-2 w-full bg-blue-500 text-white p-2 rounded-lg hover:bg-blue-600"
+        >
+          Add Task
+        </button>
+      </div>
+
+      <!-- Filter Buttons -->
+      <div class="flex justify-center space-x-2 mb-4">
+        <button
+          id="allFilter"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn active"
+          data-filter="all"
+        >
+          All
+        </button>
+        <button
+          id="activeFilter"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
+          data-filter="active"
+        >
+          Active
+        </button>
+        <button
+          id="completedFilter"
+          class="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 filter-btn"
+          data-filter="completed"
+        >
+          Completed
+        </button>
+      </div>
+
+      <!-- Task List -->
+      <ul id="taskList" class="space-y-2"></ul>
+    </div>
+
+    <script>
+      // Task Management Logic
+      const taskInput = document.getElementById("taskInput");
+      const addTaskBtn = document.getElementById("addTaskBtn");
+      const taskList = document.getElementById("taskList");
+      const filterButtons = document.querySelectorAll(".filter-btn");
+      let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+      let currentFilter = "all";
+
+      // Render tasks based on current filter
+      function renderTasks() {
+        taskList.innerHTML = "";
+        const filteredTasks = tasks.filter((task) => {
+          if (currentFilter === "all") return true;
+          if (currentFilter === "active") return !task.completed;
+          if (currentFilter === "completed") return task.completed;
+        });
+
+        filteredTasks.forEach((task) => {
+          const li = document.createElement("li");
+          li.className =
+            "flex items-center justify-between p-2 bg-white rounded-lg shadow";
+          li.innerHTML = `
+          <div class="flex items-center space-x-2">
+            <input 
+              type="checkbox" 
+              ${task.completed ? "checked" : ""} 
+              class="toggle-completed"
+              data-id="${task.id}"
+            >
+            <span 
+              class="${
+                task.completed ? "line-through text-gray-500" : ""
+              } task-text"
+              data-id="${task.id}"
+            >
+              ${task.text}
+            </span>
+          </div>
+          <div class="space-x-2">
+            <button 
+              class="edit-task text-blue-500 hover:text-blue-700"
+              data-id="${task.id}"
+            >
+              Edit
+            </button>
+            <button 
+              class="delete-task text-red-500 hover:text-red-700"
+              data-id="${task.id}"
+            >
+              Delete
+            </button>
+          </div>
+        `;
+          taskList.appendChild(li);
+        });
+        saveTasks();
+      }
+
+      // Add a new task
+      function addTask(text) {
+        if (!text.trim()) return;
+        const task = {
+          id: Date.now(),
+          text: text,
+          completed: false,
+        };
+        tasks.push(task);
+        taskInput.value = "";
+        renderTasks();
+      }
+
+      // Save tasks to local storage
+      function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+      }
+
+      // Event Listeners
+      addTaskBtn.addEventListener("click", () => addTask(taskInput.value));
+      taskInput.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") addTask(taskInput.value);
+      });
+
+      // Task interactions (toggle, edit, delete)
+      taskList.addEventListener("click", (e) => {
+        const id = parseInt(e.target.dataset.id);
+        if (e.target.classList.contains("toggle-completed")) {
+          tasks = tasks.map((task) =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+          );
+          renderTasks();
+        }
+        if (e.target.classList.contains("edit-task")) {
+          const task = tasks.find((task) => task.id === id);
+          const newText = prompt("Edit task:", task.text);
+          if (newText && newText.trim()) {
+            tasks = tasks.map((task) =>
+              task.id === id ? { ...task, text: newText.trim() } : task
+            );
+            renderTasks();
+          }
+        }
+        if (e.target.classList.contains("delete-task")) {
+          tasks = tasks.filter((task) => task.id !== id);
+          renderTasks();
+        }
+      });
+
+      // Filter tasks
+      filterButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          filterButtons.forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          currentFilter = btn.dataset.filter;
+          renderTasks();
+        });
+      });
+
+      // Initial render
+      renderTasks();
+    </script>
+  </body>
+</html>
